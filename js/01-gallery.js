@@ -1,6 +1,6 @@
 import { galleryItems } from "./gallery-items.js";
-// Change code below this line
- const galleryImages = document.querySelector("div.gallery");
+
+const galleryImages = document.querySelector("div.gallery");
 const galeryItem = galleryItems
   .map(
     ({ preview, description, original }) =>
@@ -16,21 +16,33 @@ galleryImages.addEventListener("click", clickEvent);
 
 // console.log(galleryItems);
 
+let lightboxInstance;
+
+const lightboxOptions = {
+  onShow(instance) {
+    lightboxInstance = instance;
+    document.addEventListener("keyup", keyupEvent);
+  },
+
+  onClose() {
+    document.removeEventListener("keyup", keyupEvent);
+  },
+};
+
+function keyupEvent({ code }) {
+  console.log("keyupEvent");
+  if (code === "Escape") {
+    lightboxInstance.close();
+  }
+}
+
 function clickEvent(event) {
   event.preventDefault();
   let tergetImg = event.target;
-  let originalImgSrc = tergetImg.dataset.source;
-  const OriginalImage = `<img src="${originalImgSrc}" alt="${tergetImg.getAttribute(
-    "alt"
-  )}">`;
-  basicLightbox.create(OriginalImage, options).show();
-}
-const options =
-{
-    onShow(instance){
-        console.log(instance);
-    },
-    onClose(instance){
-    console.log(instance);
-    },
+  let originalSource = tergetImg.dataset.source;
+  if (originalSource != null) {
+    let imageAlt = tergetImg.getAttribute("alt");
+    const lightboxImage = `<img src="${originalSource}" alt="${imageAlt}">`;
+    basicLightbox.create(lightboxImage, lightboxOptions).show();
+  }
 }

@@ -1,5 +1,5 @@
 import { galleryItems } from "./gallery-items.js";
-// Change code below this line
+
 const galleryImages = document.querySelector("ul.gallery");
 const galeryItem = galleryItems
   .map(
@@ -15,4 +15,4 @@ const lightbox = new SimpleLightbox(".gallery a", {
   captionsData: "alt",
   captionDelay: 250,
 });
-// console.log(lightbox);
+//console.log(lightbox);
